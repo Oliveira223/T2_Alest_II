@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
+
 struct Cidade
 {
     int id;
