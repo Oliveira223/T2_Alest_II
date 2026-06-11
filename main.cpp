@@ -16,22 +16,11 @@ using namespace std;
 // REPRESENTAÇÃO DO MAPA
 class Mapa
 {
-    
-    // Lista de adjacencia 
-    // 1. Indice externo representa cidade de origem
-    // 2. Indice interno, cada posição contem um vetor de Rota, representando todas conexçoes que saem daquela cidade
-    vector<vector<Rota>> adj;
-    
-    //Vetor para guardar todas cidades
-    vector<Cidade> cidades;
-    
-    distTo[cidades.lenght];
-    
     enum Criterio
     {    
         DISTANCIA, TEMPO, PERIGO
     };
-
+    
     struct Cidade
     {
         int id;
@@ -42,27 +31,36 @@ class Mapa
     {
         int origem, destino, distancia, tempo, perigo;
     };
-
+    
+    
+    // Lista de adjacencia 
+    // 1. Indice externo representa cidade de origem
+    // 2. Indice interno, cada posição contem um vetor de Rota, representando todas conexçoes que saem daquela cidade
+    vector<vector<Rota>> adj;
+    
+    //Vetor para guardar todas cidades
+    vector<Cidade> cidades;
+    
     public:
     //métodos somente para armazenamento
         void addCidade(string nome, int id);
         void addRota(int origem, int destino, int distancia, int tempo, int perigo);
         
     // consulta do grafo
-        int getPeso(int rota, string criterio);
+        int getPeso(const Rota& rota, Criterio criterio);
         vector<Rota> getAdjacente(int id);
         void exibirCaminho(int origem, int destino, string criterio);
-        string getCidade(int id )
+        string getCidade(int id );
 
     //algoritmo de caminho mínimo
         
         //Ele guarda o menor custo conhecido até agora
-        int distTo();
+        //int distTo();
 
         //de onde vim
-        void EdgeTo();
+        //void EdgeTo();
 
-        vector<int> dijkstra(int origem, string criterio);
+        vector<int> dijkstra(int origem, Criterio criterio);
 
     };
 
@@ -111,7 +109,7 @@ int Mapa::getPeso(const Rota& rota,Criterio criterio)
 
 }
 
-vector<Rota> getAdjacente(int id)
+   vector<Mapa::Rota> Mapa::getAdjacente(int id)
 {
     return adj[id];
 }
