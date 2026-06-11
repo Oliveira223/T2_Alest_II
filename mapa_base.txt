@@ -1,0 +1,13 @@
+ID | Cidade
+0  | Solitude
+1  | Whiterun
+2  | Windhelm
+3  | Riften
+4  | Markarth
+5  | Falkreath
+6  | Winterhold
+7  | Dawnstar
+8  | Morthal
+9  | Riverwood
+10 | Ivarstead
+11 | Dragon Bridge

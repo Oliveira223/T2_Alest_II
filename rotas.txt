@@ -1,0 +1,21 @@
+Origem        | Destino       | Distância | Tempo | Perigo
+Solitude      | Dragon Bridge | 2         | 2     | 1
+Dragon Bridge | Morthal       | 4         | 5     | 3
+Morthal       | Dawnstar      | 3         | 4     | 4
+Dawnstar      | Winterhold    | 6         | 8     | 7
+Winterhold    | Windhelm      | 5         | 6     | 5
+Windhelm      | Riften        | 4         | 5     | 6
+Riften        | Ivarstead     | 3         | 4     | 3
+Ivarstead     | Whiterun      | 5         | 6     | 4
+Whiterun      | Riverwood     | 2         | 2     | 1
+Riverwood     | Falkreath     | 4         | 5     | 5
+Falkreath     | Markarth      | 7         | 8     | 8
+Markarth      | Solitude      | 6         | 7     | 6
+Whiterun      | Dawnstar      | 5         | 5     | 5
+Whiterun      | Windhelm      | 6         | 7     | 6
+Riverwood     | Riften        | 7         | 9     | 8
+Morthal       | Solitude      | 4         | 4     | 2
+Falkreath     | Whiterun      | 5         | 5     | 4
+Markarth      | Whiterun      | 6         | 7     | 7
+Windhelm      | Dawnstar      | 4         | 5     | 5
+Winterhold    | Riften        | 8         | 10    | 9
