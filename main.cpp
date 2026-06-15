@@ -68,7 +68,8 @@ class Mapa
     };
 
 // Criar nova cidade
-// 1. Adicionar
+// 1. Adicionarif(u == -1 || distTo[j] < distTo[u])
+            //            u = j;
 // 2. Criar novo vetor vazia em adjacencia para guardar futuras rotas
 void Mapa::addCidade(string nome, int id)
 {
@@ -124,9 +125,37 @@ vector<int> Mapa::dijkstra(int origem, Criterio criterio)
     // Quais cidades já foram processadas definitivamente
     vector<bool> visitado(n, false);
 
-    // Loop principal
+    // Loop principal, repete N vezes, uma por cidade
     for(int i = 0; i < n; i++)
     {
+        // Encontra qual cidade processar nessa iteração
+        // varre distTo[] e retorna o índice u com menor custo ainda não visitado
+        int u = -1;
+        for (int j = 0; j < n; j++)
+        {
+            //Analisa cidades apenas não visitadas
+            if(!visitado[j])
+            {
+                //Primeira cidade visitada ou cidade melhor que a atual
+                if(u == -1 || distTo[j] < distTo[u])
+                {
+                    u = j;
+                } 
+
+                //Exemplo: lista = [5, 3, 8, 1, 4]
+                // menor = -1
+                // j=0: menor=-1 → menor=5 (cidade com id = 0)
+                // j=1: 3 < 5?  → sim → menor=3
+                // j=2: 8 < 3?  → não → menor=3
+                // j=3: 1 < 3?  → sim → menor=1
+                // j=4: 4 < 1?  → não → menor=1
+
+            }
+
+            // Indica que foi visitado
+            visitado[u] = true;
+        }
+
         
     }
 
