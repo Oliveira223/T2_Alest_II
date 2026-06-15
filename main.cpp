@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <queue>
 #include <climits> //para infinito
 
 using namespace std;
@@ -103,22 +102,32 @@ vector<Mapa::Rota> Mapa::getAdjacente(int id)
 }
 
 // Calcula o caminho mínimo a partir de uma origem usando o critério escolhido
-// 1. Inicializar distTo[] com infinito e edgeTo[] com -1; distTo[origem] = 0
-// 2. Inserir a origem na fila de prioridade com custo 0
-// 3. Retirar da fila a cidade de menor custo acumulado
-// 4. Se já foi visitada, ignorar e voltar ao passo 3
-// 5. Para cada vizinho: calcular novo custo e, se menor, atualizar distTo e edgeTo e inserir na fila
-// 6. Repetir 3, 4 e 5 até a fila esvaziar
-// 7. Retornar edgeTo[] para reconstrução do caminho
+// 1. Inicializar distTo[] com infinito, edgeTo[] com -1 e visitado[] com false; distTo[origem] = 0
+// 2. Repetir n vezes:
+//    2.1 Encontrar a cidade não visitada com menor distTo (cidade atual)
+//    2.2 Marcá-la como visitada
+//    2.3 Para cada vizinho da cidade atual:
+//        - Calcular novo custo (distTo[atual] + peso da rota)
+//        - Se novo custo for menor, atualizar distTo e edgeTo
+// 3. Retornar edgeTo[] para reconstrução do caminho
 vector<int> Mapa::dijkstra(int origem, Criterio criterio)
 {
-    //Distancia para cada cidade, onde:
-    //n       -> numero de cidades
-    //INT_MAX -> valor muito grande 
-    vector<int> distTO(n, INT_MAX);
+    int n = cidades.size();
 
-    //De onde eu vim para chegar em cada cidade (para reconstruir o caminho), onde
-    //n       -> 
+    // Distancia para cada cidade (começa com infinito)
+    vector<int> distTo(n, INT_MAX);
+    distTo[origem] = 0;
+
+    // De onde eu vim para chegar em cada cidade (para reconstruir o caminho)
     vector<int> edgeTo(n, -1);
+
+    // Quais cidades já foram processadas definitivamente
+    vector<bool> visitado(n, false);
+
+    // Loop principal
+    for(int i = 0; i < n; i++)
+    {
+        
+    }
 
 }
