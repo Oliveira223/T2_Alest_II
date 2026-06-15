@@ -1,7 +1,7 @@
 /*
     - Representar um  mapa composto por cidades e rotas (grafos)
     - Calcular caminhos entre diferentes localidades (algoritmos vistos em aula)
-    - Permitir diferentes critérios de otimização (?)
+    - Permitir diferentes critérios de otimização
     - Exibir os caminhos encontrados e seus respectivos custos
 
 */
@@ -58,7 +58,6 @@ class Mapa
         
         public:
         
- 
         //Métodos somente para armazenamento
         void addCidade(string nome, int id);
         void addRota(int origem, int destino, int distancia, int tempo, int perigo);
@@ -103,8 +102,7 @@ string Mapa::getCidade(int id)
     return cidades[id].nome;
 }
 
-// Calcula o caminho mínimo a partir de uma origem usando o critério escolhido 
-
+// DIJKSTRA: Calcula o caminho mínimo a partir de uma origem usando o critério escolhido 
 // 1. Inicializar distTo[] com infinito, edgeTo[] com -1 e visitado[] com false; distTo[origem] = 0
 // 2. Repetir n vezes:
 //    2.1 Encontrar a cidade não visitada com menor distTo (cidade atual)
@@ -188,20 +186,17 @@ void Mapa::exibirCaminho(int origem, int destino, Criterio criterio)
     vector<int> edgeTo = resultado.first;
     vector<int> distTo = resultado.second;
 
-
     // Vetor para armazenar o caminho
     vector<int> caminho;
 
     // vamos percorrer do destino à origem, usando o edgeTo para voltar
     int atual = destino;
     
-
     // Enquanto atual não for a origem (-1)
     while(atual != -1)
     {
         //Coloca o atual no vetor
         caminho.push_back(atual);
-
 
         // Avança para a cidade de onde veio antes do atual (acho que da pra melhorar esse comentáro)
         atual = edgeTo[atual];
@@ -213,6 +208,7 @@ void Mapa::exibirCaminho(int origem, int destino, Criterio criterio)
         cout << getCidade(caminho[i]);
         if(i > 0) cout << " -> ";
     }
+
     cout << "\nCusto total: " << distTo[destino] << endl;
 }
 
@@ -238,10 +234,6 @@ int main()
     {
         mapa.addRota(origem, destino, distancia, tempo, perigo);
     }
-
-
-
-
 
     // Fechar arquivos
     arquivo_cidades.close();
