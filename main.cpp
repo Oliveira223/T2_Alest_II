@@ -2,7 +2,7 @@
     - Representar um  mapa composto por cidades e rotas (grafos)
     - Calcular caminhos entre diferentes localidades (algoritmos vistos em aula)
     - Permitir diferentes critérios de otimização (?)
-    - Exibir os caminhos encontrados e seus rescpetivos custos
+    - Exibir os caminhos encontrados e seus respectivos custos
 
 */
 
@@ -17,63 +17,65 @@ using namespace std;
 // REPRESENTAÇÃO DO MAPA
 class Mapa
 {
-    enum Criterio{ DISTANCIA, TEMPO, PERIGO };
-    
-    struct Cidade
-    {
-        int id;
-        string nome;
-    };
-    
-    struct Rota
-    {
-        int origem, destino, distancia, tempo, perigo;
-
-        //Auxiliar para Dijjkstra
-        int getPeso(Criterio criterio)
-        {
-            switch(criterio)
-            {
-                case DISTANCIA:     return distancia;
-                case TEMPO:         return tempo;
-                case PERIGO:        return perigo;
-
-                default:            return 0;
-            }
-        }
-    };
-    
-    // Lista de adjacencia 
-    // 1. Indice externo representa cidade de origem
-    // 2. Indice interno, cada posição contem um vetor de Rota, representando todas conexçoes que saem daquela cidade
-    vector<vector<Rota>> adj;
-    
-    //Vetor para guardar todas cidades
-    vector<Cidade> cidades;
     
     public:
+    //(precisa ser public E declarado antes de Rota)
+    enum Criterio{ DISTANCIA, TEMPO, PERIGO };
     
-    //Métodos somente para armazenamento
+    private:
+
+        struct Cidade
+        {
+            int id;
+            string nome;
+        };
+
+        struct Rota
+        {
+            int origem, destino, distancia, tempo, perigo;
+
+            //Auxiliar para Dijkstra
+            int getPeso(Criterio criterio)
+            {
+                switch(criterio)
+                {
+                    case DISTANCIA:     return distancia;
+                    case TEMPO:         return tempo;
+                    case PERIGO:        return perigo;
+
+                    default:            return 0;
+                }
+            }
+        };
+        
+        // Lista de adjacencia
+        // 1. Indice externo representa cidade de origem
+        // 2. Indice interno, cada posição contem um vetor de Rota, representando todas conexçoes que saem daquela cidade
+        vector<vector<Rota>> adj;
+
+        //Vetor para guardar todas cidades
+        vector<Cidade> cidades;
+        
+        public:
+        
+ 
+        //Métodos somente para armazenamento
         void addCidade(string nome, int id);
         void addRota(int origem, int destino, int distancia, int tempo, int perigo);
-        
+
     //Consulta do grafo
-        vector<Rota> getAdjacente(int id);
-        void exibirCaminho(int origem, int destino, string criterio);
-        string getCidade(int id );
+        void exibirCaminho(int origem, int destino, Criterio criterio);
+        string getCidade(int id);
 
-
-        vector<int> dijkstra(int origem, Criterio criterio);
+        pair<vector<int>, vector<int>> dijkstra(int origem, Criterio criterio);
 
     };
 
 // Criar nova cidade
-// 1. Adicionarif(u == -1 || distTo[j] < distTo[u])
-            //            u = j;
+// 1. Adicionar cidade no vetor
 // 2. Criar novo vetor vazia em adjacencia para guardar futuras rotas
 void Mapa::addCidade(string nome, int id)
 {
-    //colocar if caso exista a cidade
     cidades.push_back({id, nome});
     adj.push_back({});
 }
@@ -94,15 +96,15 @@ void Mapa::addRota(int origem, int destino, int distancia, int tempo, int perigo
 
 }
 
-
-
-//Auxiliar para Dijkstra no relaxamento
-vector<Mapa::Rota> Mapa::getAdjacente(int id)
+// Auxiliar para exibir caminho final
+string Mapa::getCidade(int id)
 {
-    return adj[id];
+    // Cidades é um vetor onde cada posição (id) é uma cidade
+    return cidades[id].nome;
 }
 
-// Calcula o caminho mínimo a partir de uma origem usando o critério escolhido
+// Calcula o caminho mínimo a partir de uma origem usando o critério escolhido 
+
 // 1. Inicializar distTo[] com infinito, edgeTo[] com -1 e visitado[] com false; distTo[origem] = 0
 // 2. Repetir n vezes:
 //    2.1 Encontrar a cidade não visitada com menor distTo (cidade atual)
@@ -110,8 +112,8 @@ vector<Mapa::Rota> Mapa::getAdjacente(int id)
 //    2.3 Para cada vizinho da cidade atual:
 //        - Calcular novo custo (distTo[atual] + peso da rota)
 //        - Se novo custo for menor, atualizar distTo e edgeTo
-// 3. Retornar edgeTo[] para reconstrução do caminho
-vector<int> Mapa::dijkstra(int origem, Criterio criterio)
+// 3. Retornar edgeTo[] e distTo[] — edgeTo para reconstruir o caminho, distTo para o custo total
+pair<vector<int>, vector<int>> Mapa::dijkstra(int origem, Criterio criterio)
 {
     int n = cidades.size();
 
@@ -148,15 +150,113 @@ vector<int> Mapa::dijkstra(int origem, Criterio criterio)
                 // j=1: 3 < 5?  → sim → menor=3
                 // j=2: 8 < 3?  → não → menor=3
                 // j=3: 1 < 3?  → sim → menor=1
-                // j=4: 4 < 1?  → não → menor=1
-
             }
 
-            // Indica que foi visitado
-            visitado[u] = true;
         }
+        // Indica que a cidade foi visitada
+        visitado[u] = true;
 
+        // Relaxamento: percorre vizinhos de u e atualiza distTo[] se passar por u for mais barato
+        for(int k = 0; k < adj[u].size(); k++)
+        {
+            Rota r = adj[u][k];
+        
+            // custo total para chegar no vizinho passando por u
+            int novoCusto = distTo[u] + r.getPeso(criterio);
+            
+            // vale a pena ir por u? só atualiza se for mais barato (na primeira iteração tem que ser mais barato pois r.destino é infinito)
+            if(novoCusto < distTo[r.destino])
+            {
+                // atualiza o custo do vizinho
+                distTo[r.destino] = novoCusto;
+                
+                // registra que chegamos no vizinho vindo de u (para reconstruir o caminho depois)
+                edgeTo[r.destino] = u;
+            }
+        }
         
     }
-
+    // Retorna edgeTo[] para reconstruir o caminho e distTo[] para o custo total
+    return {edgeTo, distTo};
 }
+
+// Por fim, pegar todas as informações que temos e exibir o melhor caminho disponivel
+void Mapa::exibirCaminho(int origem, int destino, Criterio criterio)
+{
+    // Recebe edgeTo[] (para reconstruir o caminho) e distTo[] (para o custo total)
+    pair<vector<int>, vector<int>> resultado = dijkstra(origem, criterio);
+    vector<int> edgeTo = resultado.first;
+    vector<int> distTo = resultado.second;
+
+
+    // Vetor para armazenar o caminho
+    vector<int> caminho;
+
+    // vamos percorrer do destino à origem, usando o edgeTo para voltar
+    int atual = destino;
+    
+
+    // Enquanto atual não for a origem (-1)
+    while(atual != -1)
+    {
+        //Coloca o atual no vetor
+        caminho.push_back(atual);
+
+
+        // Avança para a cidade de onde veio antes do atual (acho que da pra melhorar esse comentáro)
+        atual = edgeTo[atual];
+    }
+
+    // Imprimir o vetor (de trás para frente para ficar na ordem certa)
+    for(int i = caminho.size() - 1; i >= 0; i--)
+    {
+        cout << getCidade(caminho[i]);
+        if(i > 0) cout << " -> ";
+    }
+    cout << "\nCusto total: " << distTo[destino] << endl;
+}
+
+int main()
+{
+    ifstream  arquivo_cidades ("mapa_base.txt");
+    ifstream  arquivo_rotas   ("rotas.txt");
+
+    // Inicializar mapa
+    Mapa mapa;
+
+    // Inicializar cidades
+    int id;
+    string nome;
+    while(arquivo_cidades >> id >> nome)
+    {
+        mapa.addCidade(nome, id);
+    }
+
+    // Inicializar rotas
+    int origem, destino, distancia, tempo, perigo;
+    while(arquivo_rotas >> origem >> destino >> distancia >> tempo >> perigo)
+    {
+        mapa.addRota(origem, destino, distancia, tempo, perigo);
+    }
+
+
+
+
+
+    // Fechar arquivos
+    arquivo_cidades.close();
+    arquivo_rotas.close();
+
+    // Testes
+    cout << "=== Menor distancia: Whiterun -> Riften ===" << endl;
+    mapa.exibirCaminho(1, 3, Mapa::DISTANCIA);
+
+    cout << "\n=== Menor tempo: Solitude -> Riften ===" << endl;
+    mapa.exibirCaminho(0, 3, Mapa::TEMPO);
+
+    cout << "\n=== Menor perigo: Whiterun -> Markarth ===" << endl;
+    mapa.exibirCaminho(1, 4, Mapa::PERIGO);
+
+    return 0;
+}
+
