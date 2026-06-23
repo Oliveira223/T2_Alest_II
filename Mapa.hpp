@@ -198,7 +198,7 @@ void Mapa::exibirCaminho(int origem, int destino, Criterio criterio)
         //Coloca o atual no vetor
         caminho.push_back(atual);
 
-        // Avança para a cidade de onde veio antes do atual (acho que da pra melhorar esse comentáro)
+        // Avança para a cidade de onde veio antes do atual
         atual = edgeTo[atual];
     }
 

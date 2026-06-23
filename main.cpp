@@ -105,7 +105,7 @@ int main()
                         string mensagem = "Menor tempo: " + mapa.getCidade(c1) + " --> " + mapa.getCidade(c2);
                         exibirCaixaTexto(mensagem);
                     }
-                    mapa.exibirCaminho(c1, c2, Mapa::DISTANCIA);
+                    mapa.exibirCaminho(c1, c2, Mapa::TEMPO);
                     cout << endl;
                     
                     criterio = 6;
@@ -117,7 +117,7 @@ int main()
                         string mensagem = "Menor perigo: " + mapa.getCidade(c1) + " --> " + mapa.getCidade(c2);
                         exibirCaixaTexto(mensagem);
                     }
-                    mapa.exibirCaminho(c1, c2, Mapa::DISTANCIA);
+                    mapa.exibirCaminho(c1, c2, Mapa::PERIGO);
                     cout << endl;
                     
                     criterio = 6;
@@ -398,20 +398,6 @@ int main()
                     break;
 
                 }
-
-    // // Testes
-    // cout << "=== Menor distancia: Whiterun -> Riften ===" << endl;
-    // mapa.exibirCaminho(1, 3, Mapa::DISTANCIA);
-
-    // cout << "\n=== Menor tempo: Solitude -> Riften ===" << endl;
-    // mapa.exibirCaminho(0, 3, Mapa::TEMPO);
-
-    // cout << "\n=== Menor perigo: Whiterun -> Markarth ===" << endl;
-    // mapa.exibirCaminho(1, 4, Mapa::PERIGO);
     }
     return 0;
 }
-
-
-
-               
